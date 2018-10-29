@@ -147,7 +147,7 @@ def gerarConjuntoTreino(BConfigMatrix):
     for i in range(len(BConfigMatrix)):
         for j in range(len(_R)):
             file.writerow(BConfigMatrix[i][j])
-            print("saving:",i,j,len(_R)*BConfigMatrix[i][j])) 
+            print("saving:",i,j,len(_R)*BConfigMatrix[i][j]) 
     
     
 def montarGraphR(BConfigMatrix):
@@ -201,7 +201,7 @@ if __name__ == '__main__':
     print("[Enh_dbm, h, d, R, P, Nb]")
     
     print("gerarConjuntoTreino")
-    #gerarConjuntoTreino(functionPower())
+    gerarConjuntoTreino(functionPower())
     #print("montarGraphR")
     #montarGraphR(functionPower())
     

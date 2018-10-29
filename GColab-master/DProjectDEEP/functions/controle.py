@@ -33,7 +33,7 @@ class Controle:
             #Taxa de Transmissao (1bps - 1Mbps): 
             #*quanto mais melhor
             #_R = [math.pow(10,3), math.pow(10,4), math.pow(10,5), math.pow(10,6)]
-            _R = range(50, int(math.pow(10,6)), 100)
+            _R = range(50, int(math.pow(10,6)), 50)
             #Tamanho  do  pacote (1bytes-1mb)
             #_Nb = [1000]
             #_Nb = [1, 10, math.pow(10,2), math.pow(10,3), math.pow(10,4), math.pow(10,5), math.pow(10,6)]
