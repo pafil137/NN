@@ -1,0 +1,84 @@
+#inconcistencia matematica quando R=2500/(Enh=negativo)
+                            prs = ps*math.pow(c6,Nb)
+                            EC = 0
+                            
+                            for k in range(7):
+                                EC += k*(prs)*math.pow(1- prs,k-1)
+                                print(prs)
+                                
+                            E1hop = numeradorEnh*EC 
+                                
+                            Enh= E1hop*h #%J/bit
+                            Enh_dbm = 10*math.log10(Enh/0.001) #%dBmJ/bit
+                        
+
+
+def plotGraph():
+    
+legend = ['saltos', 'Masked if > 0.5', 'Masked if < -0.5']
+    
+    lines = range(3)
+    
+    x = np.arange(0, 2*np.pi, 0.02)
+    y = np.sin(x)
+    y1 = np.sin(2*x)
+    y2 = np.sin(3*x)
+    ym1 = np.ma.masked_where(y1 > 0.5, y1)
+    ym2 = np.ma.masked_where(y2 < -0.5, y2)
+    
+    lines[0] = plt.plot(x, y)
+    lines[1] = plt.plot(x, ym1)
+    lines[2] = plt.plot(x, ym2)
+    
+    print(lines)
+    
+    plt.setp(lines[0], linewidth=4)
+    plt.setp(lines[1], linewidth=2)
+    plt.setp(lines[2], markersize=10)
+    
+    plt.legend(legend,
+               loc='upper right')
+    
+    plt.title('Energia  media  por  bit  em  funcao  do  tamanho  do  pacote  (Nb)\n  com taxa  de  transmissao R={0}  1Mbps e a={1}'.format(0,1))
+    plt.ylabel('Eihop - dBmJ/bit')
+    plt.xlabel('R - Nb(bits)')
+    plt.show()
+
+	#R
+	[5.224483397918915, 1.5094935334677426, 0.6188104183445146, 0.5078920640981036, 0.49648571328335966]
+[8.576147600602566, 0.938171692536371, -3.533571266693829, -4.80417870799651, -4.977292378878899]
+[14.042497645785891, 4.705535863556608, -3.3471467923316593, -8.483993402854717, -10.142644084492394]
+[20.043822999865416, 10.216869662278468, 0.7733998872694423, -7.428830313632748, -12.385539026108944]
+	
+	Nb
+	[-14.824759694558946]
+[-13.659545112660192]
+[-11.466853876173309]
+[-7.80431352842786]
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	plt.figure(1)                # the first figure
+    plt.subplot(211)             # the first subplot in the first figure
+    plt.plot([1, 2, 3])
+    plt.subplot(212)             # the second subplot in the first figure
+    plt.plot([4, 5, 6])
+    
+    
+    plt.figure(2)                # a second figure
+    plt.plot([4, 5, 6])          # creates a subplot(111) by default
+    
+    plt.figure(1)                # figure 1 current; subplot(212) still current
+    plt.subplot(211)             # make subplot(211) in figure1 current
+    plt.title('Easy as 1, 2, 3') # subplot 211 title
+    

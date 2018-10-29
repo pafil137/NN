@@ -1,0 +1,27 @@
+user_id,age,sex,country,checkin_date,trackable_id,trackable_type,trackable_name,trackable_value
+QEVuQwEABlEzkh7fsBBjEe26RyIVcg==,,,,2015-11-26,1069,Condition,Ulcerative colitis,0
+QEVuQwEAWRNGnuTRqXG2996KSkTIEw==,31,male,US,2015-11-26,1069,Condition,Ulcerative colitis,0
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3168,Condition,pain in left upper arm felt like i was getting a shot,4
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3169,Condition,hip pain when gettin up,3
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3170,Condition,pain in hand joints,4
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3171,Condition,numbness in right hand,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,1356,Condition,Headache,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3172,Condition,pain in left ankle,1
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3173,Condition,pain in left leg,1
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3174,Condition,pain in joints on feet,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3175,Condition,neck and upper back pain,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3176,Condition,neck pain at base of scull,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3177,Condition,pain inside arm and around elbow,2
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3178,Condition,diziness,3
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,3179,Condition,pain in face and jaw,1
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,123,Symptom,Joint stiffness,3
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,icon,rain
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,temperature_min,54
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,temperature_max,69
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,precip_intensity,0.0031
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,pressure,1012
+QEVuQwEA+WkNxtp/qkHvN2YmTBBDqg==,1,female,CA,2017-04-28,9363,Weather,humidity,66
+QEVuQwEAHgM/igE3w0tBL14Jq1nEfw==,,,,2015-06-22,269,Condition,Crohn's disease,3
+QEVuQwEAO+R1md5HUn8+w1Qpbg7ogw==,,,,2015-05-26,421,Condition,Gastroparesis,2
+QEVuQwEAO+R1md5HUn8+w1Qpbg7ogw==,,,,2015-05-26,152,Symptom,Nausea,1
+QEVuQwEAO+R1md5HUn8+w1Qpbg7ogw==,,,,2015-05-26,9890,Treatment,Zofran,8
