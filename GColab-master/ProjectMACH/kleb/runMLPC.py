@@ -1,70 +1,85 @@
 """
 Testing for Multi-layer Perceptron module (sklearn.neural_network)
-DATA: https://www.kaggle.com/flaredown/flaredown-autoimmune-symptom-tracker/home
 """
 
 # Author: Issam H. Laradji
 # License: BSD 3 clause
 
-import sys
-#import warnings
+#MLP
+from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPRegressor
+
+#Math AUX
 import math
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sb
 import numpy as np
 
-from numpy.testing import assert_almost_equal, assert_array_equal
-from sklearn.datasets import load_boston
-from sklearn.datasets import make_regression, make_multilabel_classification
-from sklearn.neural_network import MLPClassifier
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
-                                   assert_false, ignore_warnings)
-from sklearn.utils.testing import assert_raise_message
+#DATA USER
+import pandas as pd
+import seaborn as sb
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
+#Metrics
+from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import precision_score
 
+#Save MLP
 import _pickle as cPickle
 
-#%matplotlib inline
+#PLOT GRAPH
+import matplotlib.pyplot as plt
 
 '''
-n_inputs (int): Quantos neuronios na camada de entrada.
-n_hidden (int): Quantos neuronios na camada oculta.
-n_outputs (int): Quantos neuronios na camada de saida.
-taxa (flutuacao): A taxa de aprendizado.
-Epochs (int): o numero de iteracoes de treinamento.
-debug (int): Quanto mais o nivel, mais mensagens sao exibidas.
+ENTRADAS:
+"patient_nbr","race","gender","age","weight","admission_type_id","discharge_disposition_id","admission_source_id","time_in_hospital","payer_code","medical_specialty","num_lab_procedures","num_procedures","num_medications","number_outpatient","number_emergency","number_inpatient","diag_1","diag_2","diag_3","number_diagnoses","max_glu_serum","A1Cresult","metformin","repaglinide","nateglinide","chlorpropamide","glimepiride","acetohexamide","glipizide","glyburide","tolbutamide","pioglitazone","rosiglitazone","acarbose","miglitol","troglitazone","tolazamide","examide","citoglipton","insulin","glyburide-metformin","glipizide-metformin","glimepiride-pioglitazone","metformin-rosiglitazone","metformin-pioglitazone","change","diabetesMed","readmitted","next_encounter_id"
 
-Retorna:
-Um objeto MPPClassification salva, treinada E graficos
+
+SAIDA:
+Prever a próxima re-admissão no hospital para diabetes. (GRAFICOS)
 '''
+##INPUT########################################
+isTrain = True
+testPercent = 0
+
+#CONJ. TREINO/TESTE
+if(isTrain):
+    testPercent=0.01
+else:
+    testPercent=0.9
+
+#DEBUG
+debugData = True
+debugDeep = True
+saveDNN = True
+
+#DATA
+fileData="diabetes-slim" #Menor
+fileTrained = "diabetes-slimC"#fileData
+
+#CONTROL
+fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
+hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
+Epochs = 25000 #25000
+learning_rate = 0.005 #0.005
+solver =  "sgd"   #{'lbfgs', *'sgd', 'adam'}
+activation = "relu" #{'identity', 'logistic', 'tanh', *'relu'}
+momentumAll = [0]
+qtd_batch = 1#int, optional, default 'auto' = batch_size=min(200, n_samples)
 
 ##DATA###############################################
-isTrain = False
-
-fileData="teste" #Menor
-fileTrained = "teste"#fileData
-testPercent=0.1
-
-data = pd.read_csv("./{0}.csv".format(fileData))
+data = pd.read_csv("./ConjTreino/{0}.csv".format(fileData))
 data.head()
 
 data_train, data_test = train_test_split(data, test_size=testPercent)
 
-#dataOut = ["trackable_value"]
-#dataIn = ["age","sex","country","checkin_date","trackable_id","trackable_type","trackable_name"]
+#admission_type_id, 
 dataOut = ["d"]
-dataIn = ["BEnh","h","R","Nb","a"]
+dataIn = ["patient_nbr","race","gender","age","weight","admission_type_id","discharge_disposition_id","admission_source_id","time_in_hospital","payer_code","medical_specialty","num_lab_procedures","num_procedures","num_medications","number_outpatient","number_emergency","number_inpatient","diag_1","diag_2","diag_3","number_diagnoses","max_glu_serum","A1Cresult","metformin","repaglinide","nateglinide","chlorpropamide","glimepiride","acetohexamide","glipizide","glyburide","tolbutamide","pioglitazone","rosiglitazone","acarbose","miglitol","troglitazone","tolazamide","examide","citoglipton","insulin","glyburide-metformin","glipizide-metformin","glimepiride-pioglitazone","metformin-rosiglitazone","metformin-pioglitazone","change","diabetesMed","readmitted","next_encounter_id"]
 
-# user_id,age,sex,country,checkin_date,trackable_id,trackable_type,trackable_name,trackable_value
+# Training data ["h","d","R","P0","Nb","a"]
 xData = data_train[dataIn]
 yData = data_train[dataOut]
-
-print(yData)
 
 Xtrain = xData.values
 Ytrain = yData.values
@@ -85,105 +100,143 @@ y = y.flatten()
 yt = np.array(Ytest)
 yt = yt.flatten() 
 
-##DEEP########################################
-#DEBUG
-debugData = True
-debugDeep = True
-saveDNN = True
-
-#CONTROL
-fileDNN = './{0}.pkl'.format(fileTrained)
-hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
-Epochs = 25000 #25000
-learning_rate = 0.005 #0.005
-solver =  "adam"   #{'lbfgs', *'sgd', 'adam'}
-activation = "relu" #{'identity', 'logistic', 'tanh', *'relu'}
-momentumAll = [0]
-qtd_batch = 1#"auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
-
 print("BD\n treino:",len(y),"teste:",len(yt))
     
 ##PROCESSAMENTO##############################
 def criarMLPC():
-    print("####CRIANDO MLPClassifier####")
-        
+    print("####CRIANDO MLPC####")
+    
     for momentum in momentumAll:
         mlp = MLPClassifier(solver=solver, 
                            hidden_layer_sizes = hidden_layer,
                            activation=activation,
                            learning_rate_init=learning_rate, 
                            random_state=1,
-                           batch_size=qtd_batch,
-                           max_iter=Epochs, 
-                           momentum=momentum)
+                           batch_size=qtd_batch, 
+                           momentum=momentum,
+                           max_iter=Epochs)
         
         #TREINO
-        mlp.fit(X, y)
-                        
+        n_classes = np.unique(y)
+        for i in range(Epochs):
+            mlp.partial_fit(X, y, n_classes)
+            print((100*i/Epochs),"%")
+        
         #TESTE
         pred = mlp.predict(Xt)
         
-        score = mlp.score(Xt, yt)
-        print('score:',score)
-                
-        #avalia a saida da mlp
-        ####VER DISTRIBUICAO DOS DADOS
-        if(debugDeep==True):
-            debugMLPC(pred)
-            
-        #assert_greater(score, 0.70)
-        #assert_almost_equal(pred, yt, decimal=2)
+        score = mlp.score(X, y)
+        print(score)
         
         #######SAVE
         if(saveDNN==True):
             with open(fileDNN, 'wb') as fid:
                 cPickle.dump(mlp, fid) 
 
+        #avalia a saida da mlp
+        ####VER DISTRIBUICAO DOS DADOS
+        if(debugDeep==True):
+            debugMLPC(pred)
+        
+
 #CARREGAR MLPR SALVO EM ARQUIVO        
 def carregarMLPC():
-    print("####CARREGANDO MLPR - NORMAL####")
+    print("####CARREGANDO MLPC - NORMAL####")
     
     with open(fileDNN, 'rb') as fid:
-        mlp_loaded = cPickle.load(fid)   
+        mlp = cPickle.load(fid)   
     
     #TESTE
-    pred = mlp_loaded.predict(Xt)
+    pred = mlp.predict(Xt)
     
-    score = mlp_loaded.score(Xt, yt)
-    mse = mean_squared_error(yt, pred)
-        
-    print('score:',score)
-    print('mse:',mse)
-        
+    score = mlp.score(Xt, yt)
+    print(score)
+    
     debugMLPC(pred)
 
-#DEBUGAR DADOS E RESULTADOS    
+
+##SAIDA############################## 
 def debugMLPC(pred=[]):
     #DEBUG DATA
     if (debugData==True):
         #Avaliar dados
         data.hist(bins=50, figsize=(20,15))
-        plt.savefig('./{0}D.eps'.format(fileTrained), format='eps', dpi=1000)
+        plt.savefig('./outPut/{0}DC.eps'.format(fileData), format='eps', dpi=1000)
         plt.show()
     
         #Avalia a representatividade dos dados para as CLASSES
         plt.figure(figsize=[10,4])
         sb.heatmap(data.corr())
-        plt.savefig('./{0}R.eps'.format(fileTrained), format='eps', dpi=1000)
+        plt.savefig('./outPut/{0}RC.eps'.format(fileData), format='eps', dpi=1000)
         plt.show()
         
     #PLOTAR GRAFICO PREDICAO    
-    if(debugDeep==True):
-        plt.plot(yt)
-        plt.plot(pred)
-        plt.legend("RP")
-        plt.title("Right vs Predicted values")
-        plt.savefig('./{0}-{1}-{2}.eps'.format(len(X),hidden_layer, Epochs), format='eps', dpi=1000)    
-        plt.show() 
+    if(debugDeep==True)and(pred!=[]):
+        #print acuraccy
+        accuracy = accuracy_score(yt, pred)
+        print('accuracy:',accuracy)
+        
+        #print Result
+        print(yt)
+        print(pred)
+        
+        printGraph(pred)
+        
+def printGraph(pred):
+    #n_classes = np.unique(yt)
+    
+    #Graph1: Resultado Bruto
+    plt.plot(pred, 'ro')
+    plt.plot(yt, "b+")
+    plt.legend("RP")
+    plt.title("Real Values vs Predicted Points")
+    plt.show()
+    
+    #graph2:barra de ocorrencia
+    uniquePred, countsPred = np.unique(pred, return_counts=True)
+    uniqueY, countsY = np.unique(yt, return_counts=True)
+    
+    N = len(uniqueY)
+        
+    ind = np.arange(N)  # the x locations for the groups
+    width = 0.35       # the width of the bars
+    
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(ind, countsPred, width)
+    rects2 = ax.bar(ind + width, countsY, width)
+    
+    # add some text for labels, title and axes ticks
+    ax.set_ylabel('Ocorrencias')
+    ax.set_xticks(ind + width / 2)
+    ax.set_xticklabels(uniqueY)
+
+    plt.title("Real Values vs Predicted Points")
+    plt.legend("RP")
+    
+    autolabel(rects1, ax)
+    autolabel(rects2, ax)
+    
+    plt.show()    
+    
+    #GRAPH3: Learning curve
+    
+def autolabel(rects, ax):
+    """
+    Attach a text label above each bar displaying its height
+    """
+    for rect in rects:
+        height = rect.get_height()
+        ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
+                '%d' % int(height),
+                ha='center', va='bottom')    
+
         
 if __name__ == '__main__':     
+
     if(isTrain):
-        criarMLPC()
+        #criarMLPC()
+        debugMLPC()
+        printGraph(yt)
     else:
         carregarMLPC()
-        #iotMLPR(Xt, yt)
+    

@@ -1,0 +1,22 @@
+###############PASSOS####################
+####PROBLEMA#############################
+Prever a próxima re-admissão no hospital para diabetes.
+#QUEM SERÃO OS PROXIMOS READMITIDOS?
+
+####DADOS################################
+1. ENTENDER DINAMICA DO PROBLEMA
+-Quem foi readmitido, e quais as principais caracteristicas que esses individuos tem?
+
+2. PRINCIPAIS VARIAVEIS ENVOLVIDAS NO PROBLEMA
+- dos readmitidos QUAIS VARIAVEIS SE PARECEM?
+- 1. carregar base
+- 2. normalizar dados (transformar em numeros)
+- 3. ver reincidencia
+	uniqueY, countsY = np.unique(yt, return_counts=True)
+	**plotar
+- 4. DOS REINCIDENTES
+	-salvar base de reincidentes
+		-analizar manualmente variaveis
+	-DEFINIR VARIAVEIS IMPORTANTES
+	-QUANTIDADE DE REINCIDENCIA
+	
