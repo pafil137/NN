@@ -2,9 +2,6 @@
 Testing for Multi-layer Perceptron module (sklearn.neural_network)
 """
 
-# Author: Issam H. Laradji
-# License: BSD 3 clause
-
 #MLP
 from sklearn.neural_network import MLPClassifier
 from sklearn.neural_network import MLPRegressor
@@ -30,46 +27,37 @@ import _pickle as cPickle
 #PLOT GRAPH
 import matplotlib.pyplot as plt
 from sympy.logic.boolalg import false
-'''
-n_inputs (int): Quantos neuronios na camada de entrada.
-n_hidden (int): Quantos neuronios na camada oculta.
-n_outputs (int): Quantos neuronios na camada de saida.
-taxa (flutuacao): A taxa de aprendizado.
-Epochs (int): o numero de iteracoes de treinamento.
-debug (int): Quanto mais o nivel, mais mensagens sao exibidas.
-
-Retorna:
-Um objeto MPPRegressor pronto para ser treinado E graficos
-'''
 
 ##INPUT########################################
 isTrain = True
 testPercent = 0
 
-#CONJ. TREINO/TESTE
-if(isTrain):
-    testPercent=0.01
-else:
-    testPercent=0.9
+#DATA
+fileData="YXcomplete" #Menor
+fileTrained = "YXcomplete4R"#fileData
+
+#CONTROL
+solver =  "sgd"   #{'lbfgs', *'sgd', 'adam'}
+activation = "relu" #{'identity', 'logistic', 'tanh', *'relu'}
+
+qtd_batch = "auto"#"auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
+
+fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
+hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
+Epochs = 25000 #25000
+learning_rate = 0.005 #0.005
+momentumAll = [0]
 
 #DEBUG
 debugData = False
 debugDeep = True
 saveDNN = True
 
-#DATA
-fileData="YXramdom" #Menor
-fileTrained = "YXramdom2R"#fileData
-
-#CONTROL
-fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
-hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
-Epochs = 25000 #25000
-learning_rate = 0.005 #0.005
-solver =  "adam"   #{'lbfgs', *'sgd', 'adam'}
-activation = "tanh" #{'identity', 'logistic', 'tanh', *'relu'}
-momentumAll = [0]
-qtd_batch = 1#int, optional, default 'auto' = batch_size=min(200, n_samples)
+#CONJ. TREINO/TESTE
+if(isTrain):
+    testPercent=0.01
+else:
+    testPercent=0.9
 
 ##DATA###############################################
 data = pd.read_csv("./ConjTreino/{0}.csv".format(fileData))

@@ -1,3 +1,41 @@
+N = 100
+r0 = 0.6
+x = 0.9 * np.random.rand(N)
+y = 0.9 * np.random.rand(N)
+area = (20 * np.random.rand(N))**2  # 0 to 10 point radii
+c = np.sqrt(area)
+r = np.sqrt(x * x + y * y)
+area1 = np.ma.masked_where(r < r0, area)
+area2 = np.ma.masked_where(r >= r0, area)
+plt.scatter(x, y, s=area1, marker='^', c=c)
+plt.scatter(x, y, s=area2, marker='o', c=c)
+# Show the boundary between the regions:
+theta = np.arange(0, np.pi / 2, 0.01)
+plt.plot(r0 * np.cos(theta), r0 * np.sin(theta))
+
+plt.show()
+
+N = 5
+menMeans = (20, 35, 30, 35, 27)
+womenMeans = (25, 32, 34, 20, 25)
+menStd = (2, 3, 4, 1, 2)
+womenStd = (3, 5, 2, 3, 3)
+ind = np.arange(N)    # the x locations for the groups
+width = 0.35       # the width of the bars: can also be len(x) sequence
+
+p1 = plt.bar(ind, menMeans, width, yerr=menStd)
+p2 = plt.bar(ind, womenMeans, width,
+             bottom=menMeans, yerr=womenStd)
+
+plt.ylabel('Scores')
+plt.title('Scores by group and gender')
+plt.xticks(ind, ('G1', 'G2', 'G3', 'G4', 'G5'))
+plt.yticks(np.arange(0, 81, 10))
+plt.legend((p1[0], p2[0]), ('Men', 'Women'))
+
+plt.show()
+
+
 #inconcistencia matematica quando R=2500/(Enh=negativo)
                             prs = ps*math.pow(c6,Nb)
                             EC = 0
