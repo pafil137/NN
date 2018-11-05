@@ -24,8 +24,8 @@ class Controle:
             #########ENTRADAS##############
             ####VARIAVEIS####
             ##Coeficiente  de  atenuacao
-            #_a = [2]
-            _a = [2, 4]
+            _a = [2]
+            #_a = [2, 4]
             #Distancia  entre  fonte  e  destino
             #_dist = [80]
             #_dist = [30,80,150,250]
@@ -44,6 +44,8 @@ class Controle:
             #Numero de Nodos
             n=0
             #_n = h + 1
+            _P0i = 0.00001
+            _P0o = 0.1
             
             ####CONSTANTES####
             #Potencia  do  circuito  de  recepcao
@@ -91,22 +93,25 @@ class Controle:
             #*quanto mais melhor
             #_R = [math.pow(10,3), math.pow(10,4), math.pow(10,5), math.pow(10,6)]
             #_R = range(50, int(math.pow(10,6)), 10000)
-            _R = range(int(math.pow(10,3)),int(math.pow(10,5)),1000)
-            #_R = list(range(int(math.pow(10,3)),int(math.pow(10,4)),1000),
-            #          range(int(math.pow(10,4)),int(math.pow(10,5)),10000),
-            #          range(int(math.pow(10,5)),int(math.pow(10,6)),100000),
-            #          range(int(math.pow(10,6)),int(math.pow(10,7)),1000000)) 
+            #_R = range(int(math.pow(10,3)),int(math.pow(10,5)),1000)
+            _R = (range(int(math.pow(10,3)),int(math.pow(10,4)),int(math.pow(10,3)))
+            +range(int(math.pow(10,4)),int(math.pow(10,5)),int(math.pow(10,4)))
+            +range(int(math.pow(10,5)),int(math.pow(10,6)-math.pow(10,5)),int(math.pow(10,5)))
+            #+range(int(math.pow(10,6)),int(math.pow(10,7)),int(math.pow(10,6)))
+            ) 
             #Tamanho  do  pacote (1bytes-1mb)
-            _Nb = [1000]
+            #_Nb = [1000]
             #_Nb = [1, 10, math.pow(10,2), math.pow(10,3), math.pow(10,4), math.pow(10,5), math.pow(10,6)]
             #_Nb = range(1, 100)
-            #_Nb = range(1, 7981)#1kbp-8mb
+            _Nb = range(1, 7981)#1kbp-8mb
             #Numero  de  saltos  ate  o  destino
             _h = [1, 2, 4, 8]
             #_h = range(1, _dist[0]+1)
             #Numero de Nodos
             n=0
             #_n = h + 1
+            _P0i = 0.00001
+            _P0o = 0.1
             
             ####CONSTANTES####
             #Potencia  do  circuito  de  recepcao
@@ -145,6 +150,8 @@ class Controle:
         self.R = _R
         self.Nb = _Nb
         self.h = _h
+        self.P0i = _P0i
+        self.P0o = _P0o
         self.n = n
         self.PrxElec = PrxElec
         self.Tstart = Tstart

@@ -21,6 +21,9 @@ _R = ctrol.R
 _Nb = ctrol.Nb
 _h = ctrol.h
 _n = ctrol.n
+_P0i = ctrol.P0i
+_P0o = ctrol.P0o
+
 PrxElec = ctrol.PrxElec
 Pstart = ctrol.Pstart
 Tstart = ctrol.Tstart
@@ -113,9 +116,8 @@ def functionPower():
                         c5 = 4*bm*C2*bamp
                         
                         #P0 = (c1/c2) + R*(math.sqrt(c3+c4)/c5)
-                        
-                        P0 = 0.001 
-                        while(P0<0.3):   
+                        P0 = _P0i
+                        while(P0<_P0o):   
                                                                                         
                             c6 = 1-(am*R*(math.pow(d,a))/float(2*bm*C2*P0))    
                             
@@ -142,7 +144,7 @@ def functionPower():
                                 _BConfigR[j] = [_BEnh,h,d,R,P0,Nb,a]
                                 #print(_BConfigR[j])
                                 
-                            P0+=0.001
+                            P0+=_P0i
                     j+=1
                     
                 _BConfigMatrix[i] = _BConfigR
@@ -173,9 +175,9 @@ def findSomatorio(Ret, p):
 #Gerar treino entrada e saida DNN
 def gerarConjuntoTreino(BConfigMatrix):
 
-    file = csv.writer(open("./YX.csv", "wb"))
+    file = csv.writer(open("./YXcsma.csv", "wb"))
     
-    file.writerow(["BEnh","h","d","R","P0","Nb","a"])    
+    file.writerow("BEnh,h,d,R,P0,Nb,a")  
     for i in range(len(BConfigMatrix)):
         for j in range(len(_R)):
             file.writerow(BConfigMatrix[i][j])
@@ -231,10 +233,12 @@ if __name__ == '__main__':
     print("#########PARAMETROS##########\n *numero  de  saltos(h)\n Energia dissipada-dBmJ/bit(Enh_DBM)\n distancia hop (_distH)\n distancia(dist)\n taxa(R)\n potencia(P)\n tamanho  do  pacote(Nb)\n Coeficiente  de  atenuacao (a)\n#############################\n")
     print("[Enh_dbm, h, d, R, P, Nb]")
     
-    #print("gerarConjuntoTreino")
-    #gerarConjuntoTreino(functionPower())
+    Blist = functionPower()
+    
+    print("gerarConjuntoTreino")
+    gerarConjuntoTreino(Blist)
     
     print("montarGraphR")
-    montarGraphR(functionPower())
+    montarGraphR(Blist)
     
     print("####END####")

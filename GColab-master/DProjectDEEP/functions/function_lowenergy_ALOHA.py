@@ -141,9 +141,9 @@ def functionPower():
 #Gerar treino entrada e saida DNN
 def gerarConjuntoTreino(BConfigMatrix):
 
-    file = csv.writer(open("./DATA.csv", "wb"))
+    file = csv.writer(open("./DATA{0}.csv".format(_a[0]), "wb"))
     
-    file.writerow(["BEnh","h","d","R","P0","Nb","a"])    
+    file.writerow("BEnh,h,d,R,P0,Nb,a")    
     for i in range(len(BConfigMatrix)):
         for j in range(len(_R)):
             file.writerow(BConfigMatrix[i][j])
@@ -200,9 +200,12 @@ if __name__ == '__main__':
     print("#########PARAMETROS##########\n *numero  de  saltos(h)\n Energia dissipada-dBmJ/bit(Enh_DBM)\n distancia hop (_distH)\n distancia(dist)\n taxa(R)\n potencia(P)\n tamanho  do  pacote(Nb)\n Coeficiente  de  atenuacao (a)\n#############################\n")
     print("[Enh_dbm, h, d, R, P, Nb]")
     
+    Blist = functionPower()
+    
     print("gerarConjuntoTreino")
-    gerarConjuntoTreino(functionPower())
-    #print("montarGraphR")
-    #montarGraphR(functionPower())
+    gerarConjuntoTreino(Blist)
+    
+    print("montarGraphR")
+    #montarGraphR(Blist)
     
     print("####END####")

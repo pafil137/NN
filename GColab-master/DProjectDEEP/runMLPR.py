@@ -28,19 +28,28 @@ import _pickle as cPickle
 import matplotlib.pyplot as plt
 from sympy.logic.boolalg import false
 
-##INPUT########################################
-isTrain = True
-testPercent = 0
+##PRECONFIG####################################
+#CONFIGURATION
+solverC     = ["adam", "sgd",      "adam", "sgd",      "sgd",  "sgd"]
+activationC = ["relu", "logistic", "tanh", "identity", "relu", "tanh"]
 
 #DATA
-fileData="YXcomplete" #Menor
-fileTrained = "YXcomplete4R"#fileData
+nameData = ["YXsmall","YXlite","YXmid","YXbig","YXcomplete","YXcompleteS", "YXramdom"]
 
-#CONTROL
-solver =  "sgd"   #{'lbfgs', *'sgd', 'adam'}
-activation = "relu" #{'identity', 'logistic', 'tanh', *'relu'}
+##INPUT########################################    
+#TRAINO OU TESTE
+isTrain = False
+config = 2 #2 BESTCONFIG: adam-tanh
+configDataTeste = 5 #5 COMPLETES
+configDataTrain = 4 #4 COMPLETE
 
-qtd_batch = "auto"#"auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
+qtd_batch = 1#BEST: 1 "auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
+
+solver =  solverC[config]
+activation = activationC[config]
+
+fileData=nameData[configDataTeste]
+fileTrained = nameData[configDataTrain]+"{0}1".format(config)
 
 fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
 hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
@@ -91,8 +100,6 @@ y = y.flatten()
 yt = np.array(Ytest)
 yt = yt.flatten() 
 
-
-    
 ##PROCESSAMENTO##############################
 #DEEP
 print("BD\n treino:",len(y),"teste:",len(yt))
@@ -100,6 +107,7 @@ def criarMLPR():
     print("####CRIANDO MLPR####")
     
     for momentum in momentumAll:
+        
         mlp = MLPRegressor(solver=solver, 
                            hidden_layer_sizes = hidden_layer,
                            activation=activation,
@@ -171,7 +179,7 @@ def iotMLPR(Xp, yp):
     plt.plot(yt)
     plt.plot(pred, 'ro')
     plt.legend("RP")
-    plt.title("Real Values vs Predicted Points")
+    plt.title("Real Values vs Predicted Points CONFIG:{0}".format(config))
     plt.show()
 
 
@@ -182,7 +190,7 @@ def debugMLPR(pred=[]):
     if (debugData==True):
         #Avaliar dados
         data.hist(bins=50, figsize=(20,15))
-        plt.savefig('./outPut/{0}DR.eps'.format(fileData), format='eps', dpi=1000)
+        plt.savefig('./ConjTreino/{0}DR.eps'.format(fileData), format='eps', dpi=1000)
         plt.show()
     
         #Avalia a representatividade dos dados para as CLASSES
@@ -191,13 +199,14 @@ def debugMLPR(pred=[]):
         plt.savefig('./ConjTreino/{0}.eps'.format(fileData), format='eps', dpi=1000)
         plt.show()
         
+                
     #PLOTAR GRAFICO PREDICAO    
     if(debugDeep==True):
         plt.plot(yt)
         plt.plot(pred)
         plt.legend("RP")
         plt.title("Right vs Predicted values")
-        plt.savefig('./outPut/{0}-{1}-{2}R.eps'.format(len(X),hidden_layer, Epochs), format='eps', dpi=1000)    
+        #plt.savefig('./outPut/{0}-{1}-{2}R.eps'.format(len(X),hidden_layer, Epochs), format='eps', dpi=1000)    
         plt.show()
     
 if __name__ == '__main__':     

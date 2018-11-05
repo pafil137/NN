@@ -30,45 +30,38 @@ import _pickle as cPickle
 #PLOT GRAPH
 import matplotlib.pyplot as plt
 
-'''
-n_inputs (int): Quantos neuronios na camada de entrada.
-n_hidden (int): Quantos neuronios na camada oculta.
-n_outputs (int): Quantos neuronios na camada de saida.
-taxa (flutuacao): A taxa de aprendizado.
-Epochs (int): o numero de iteracoes de treinamento.
-debug (int): Quanto mais o nivel, mais mensagens sao exibidas.
+solverC     = ["adam", "sgd",      "adam", "sgd",      "sgd",  "sgd"]
+activationC = ["relu", "logistic", "tanh", "identity", "relu", "tanh"]
 
-Retorna:
-Um objeto MPPRegressor pronto para ser treinado E graficos
-'''
-##INPUT########################################
-isTrain = False
-testPercent = 0
+#DATA
+nameData = ["YXsmall","YXlite","YXmid","YXbig","YXcomplete","YXramdom"]
 
-#CONJ. TREINO/TESTE
-if(isTrain):
-    testPercent=0.01
-else:
-    testPercent=0.9
+##INPUT########################################    
+#TRAINO OU TESTE
+isTrain = True
+fileData=nameData[4]
+config = 0
+qtd_batch = "auto"#"auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
+
+solver =  solverC[config]
+activation = activationC[config]
+fileTrained = fileData+"{0}".format(config)#fileData
+fileDNN = './trainedDNN/C{0}.pkl'.format(fileTrained)
+hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
+Epochs = 25000 #25000
+learning_rate = 0.005 #0.005
+momentumAll = [0]
 
 #DEBUG
 debugData = False
 debugDeep = True
 saveDNN = True
 
-#DATA
-fileData="testeC" #Menor
-fileTrained = "testeC"#fileData
-
-#CONTROL
-fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
-hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
-Epochs = 25000 #25000
-learning_rate = 0.005 #0.005
-solver =  "sgd"   #{'lbfgs', *'sgd', 'adam'}
-activation = "relu" #{'identity', 'logistic', 'tanh', *'relu'}
-momentumAll = [0]
-qtd_batch = 1#int, optional, default 'auto' = batch_size=min(200, n_samples)
+#CONJ. TREINO/TESTE
+if(isTrain):
+    testPercent=0.01
+else:
+    testPercent=0.9
 
 ##DATA###############################################
 data = pd.read_csv("./ConjTreino/{0}.csv".format(fileData))
