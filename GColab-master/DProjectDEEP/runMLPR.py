@@ -34,39 +34,43 @@ solverC     = ["adam", "sgd",      "adam", "sgd",      "sgd",  "sgd"]
 activationC = ["relu", "logistic", "tanh", "identity", "relu", "tanh"]
 
 #DATA
-nameData = ["YXsmall","YXlite","YXmid","YXbig","YXcomplete","YXcompleteS", "YXramdom"]
+nameData = ["YXsmall","YXlite","YXmid","YXbig","YXbig2","YXcomplete","YXcompleteS", "YXramdom", "FINAL"]
 
 ##INPUT########################################    
 #TRAINO OU TESTE
-isTrain = False
-config = 2 #2 BESTCONFIG: adam-tanh
+isTrain = True
+
 configDataTeste = 5 #5 COMPLETES
-configDataTrain = 4 #4 COMPLETE
+configDataTrain = 5 #8 COMPLETE-FINAL
+config = 1 #BESTCONFIG: 4
 
-qtd_batch = 1#BEST: 1 "auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
 
-solver =  solverC[config]
-activation = activationC[config]
-
-fileData=nameData[configDataTeste]
-fileTrained = nameData[configDataTrain]+"{0}1".format(config)
-
-fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
-hidden_layer=(1,)#*(1,) tuple, length = n_layers - 2, default (100,)
-Epochs = 25000 #25000
+hidden_layer=(100,100,100,)#*(1,) tuple, length = n_layers - 2, default (100,)
+Epochs = 100 #25000
 learning_rate = 0.005 #0.005
-momentumAll = [0]
 
-#DEBUG
-debugData = False
-debugDeep = True
-saveDNN = True
 
 #CONJ. TREINO/TESTE
 if(isTrain):
     testPercent=0.01
 else:
-    testPercent=0.9
+    testPercent=0.009
+
+qtd_batch = "auto"#BEST: 1 "auto"#int, optional, default 'auto' = batch_size=min(200, n_samples)
+momentumAll = [0]
+
+solver =  solverC[config]
+activation = activationC[config]
+
+fileData=nameData[configDataTeste]
+fileTrained = nameData[configDataTrain]+"{0}hl".format(config)
+
+fileDNN = './trainedDNN/{0}.pkl'.format(fileTrained)
+
+#DEBUG
+debugData = False
+debugDeep = True
+saveDNN = True
 
 ##DATA###############################################
 data = pd.read_csv("./ConjTreino/{0}.csv".format(fileData))
@@ -119,7 +123,9 @@ def criarMLPR():
         #TREINO
         for i in range(Epochs):
             mlp.partial_fit(X, y)
-            print((100*i/Epochs),"%")
+            pred = mlp.predict(X)
+            mse = mean_squared_error(y, pred)
+            print((100*i/Epochs),"% M.S.E:",mse)
                 
         #TESTE
         pred = mlp.predict(Xt)

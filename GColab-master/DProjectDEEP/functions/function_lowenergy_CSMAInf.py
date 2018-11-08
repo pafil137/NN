@@ -177,7 +177,7 @@ def gerarConjuntoTreino(BConfigMatrix):
 
     file = csv.writer(open("./YXcsma.csv", "wb"))
     
-    file.writerow("BEnh,h,d,R,P0,Nb,a")  
+    file.writerow(["BEnh","h","d","R","P0","Nb","a"])    
     for i in range(len(BConfigMatrix)):
         for j in range(len(_R)):
             file.writerow(BConfigMatrix[i][j])
